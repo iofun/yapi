@@ -3,16 +3,6 @@
 文档：
 <p><a target="_blank" href="https://hellosean1025.github.io/yapi">hellosean1025.github.io/yapi</a></p>
 
-### 平台介绍
-![avatar](yapi-base-flow.jpg)
-
-YApi 是<strong>高效</strong>、<strong>易用</strong>、<strong>功能强大</strong>的 api 管理平台，旨在为开发、产品、测试人员提供更优雅的接口管理服务。可以帮助开发者轻松创建、发布、维护 API，YApi 还为用户提供了优秀的交互体验，开发人员只需利用平台提供的接口数据写入工具以及简单的点击操作就可以实现接口的管理。
-
-**QQ交流群**:
-
-644642474 **主群可能已满**
-
-941802405 **群2欢迎加入**
 
 ### 特性
 *  基于 Json5 和 Mockjs 定义接口返回数据的结构和文档，效率提升多倍
@@ -23,35 +13,60 @@ YApi 是<strong>高效</strong>、<strong>易用</strong>、<strong>功能强大
 *  支持 postman, har, swagger 数据导入
 *  免费开源，内网部署，信息再也不怕泄露了
 
-### 内网部署
-#### 环境要求
-* nodejs（7.6+)
-* mongodb（2.6+）
-* git
-#### 安装
-使用我们提供的 yapi-cli 工具，部署 YApi 平台是非常容易的。执行 yapi server 启动可视化部署程序，输入相应的配置和点击开始部署，就能完成整个网站的部署。部署完成之后，可按照提示信息，执行 node/{网站路径/server/app.js} 启动服务器。在浏览器打开指定url, 点击登录输入您刚才设置的管理员邮箱，默认密码为 ymfe.org 登录系统（默认密码可在个人中心修改）。
 
-    npm install -g yapi-cli --registry https://registry.npm.taobao.org
-    yapi server 
-    
-#### 服务管理
+### 安装
+下面以`/www/wwwroot/yapi` 项目目录 为示例
+
+```
+mkdir /www/wwwroot/yapi
+cd /www/wwwroot/yapi
+git clone https://github.com/iofun/yapi.git vendors
+cp vendors/config/config.json ./config.json
+cd vendors
+npm install --production
+npm run install-server
+```
+### 启动服务器
+```
+node server/app.js
+```
+
+安装程序会初始化数据库索引和管理员账号，管理员账号名可在 config.json 配置
+
+默认密码为`123456`
+
+### 服务管理
 利用pm2方便服务管理维护。
+```
+npm install pm2 -g  //安装pm2
+cd  {项目目录}
+pm2 start "vendors/server/app.js" --name yapi //pm2管理yapi服务
+pm2 info yapi //查看服务信息
+pm2 stop yapi //停止服务
+pm2 restart yapi //重启服务
+```
 
-    npm install pm2 -g  //安装pm2
-    cd  {项目目录}
-    pm2 start "vendors/server/app.js" --name yapi //pm2管理yapi服务
-    pm2 info yapi //查看服务信息
-    pm2 stop yapi //停止服务
-    pm2 restart yapi //重启服务
+### 开机自启动
+centos
+```
+pm2 save
+pm2 startup
+systemctl enable pm2-root
+```
 
-#### 升级
+### 升级
 升级项目版本是非常容易的，并且不会影响已有的项目数据，只会同步 vendors 目录下的源码文件。
-    
-    cd  {项目目录}
-    yapi ls //查看版本号列表
-    yapi update //更新到最新版本
-    yapi update -v {Version} //更新到指定版本
-    
+
+cd {项目目录}
+
+下面以`/www/wwwroot/yapi` 为示例
+```
+cd /www/wwwroot/yapi
+rm -rf ./vendors
+git clone https://github.com/iofun/yapi.git vendors
+cd vendors
+npm install --production
+```
 ### 教程
 * [使用 YApi 管理 API 文档，测试， mock](https://juejin.im/post/5acc879f6fb9a028c42e8822)
 * [自动更新 Swagger 接口数据到 YApi 平台](https://juejin.im/post/5af500e251882567096140dd)
@@ -86,24 +101,6 @@ YApi 是<strong>高效</strong>、<strong>易用</strong>、<strong>功能强大
 * [idea 接口上传调试插件 easy-yapi](https://easyyapi.com/)
 * [执行 postgres sql 的服务](https://github.com/shouldnotappearcalm/http-postgres-server)
 
-### YApi 的一些客户
-* 去哪儿
-* 携程
-* 艺龙 
-* 美团
-* 百度
-* 腾讯
-* 阿里巴巴
-* 京东
-* 今日头条
-* 唯品支付 
-* 链家网
-* 快手
-* 便利蜂
-* 中商惠民
-* 新浪
-* VIPKID
-* 马蜂窝
 
 ### Authors
 * [hellosean1025](https://github.com/hellosean1025)

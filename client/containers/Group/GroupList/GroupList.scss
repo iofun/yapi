@@ -1,5 +1,9 @@
 @import '../../../styles/mixin.scss';
 
+.ant-layout-sider{
+  height: auto !important;
+}
+
 .group-bar {
   min-height: 5rem;
   .curr-group {

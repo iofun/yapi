@@ -127,14 +127,14 @@ class groupController extends baseController {
     let params = ctx.params;
 
     // 新版每个人都有权限添加分组
-    
+
     // if (this.getRole() !== 'admin') {
     //   return (ctx.body = yapi.commons.resReturn(null, 401, '没有权限'));
     // }
 
     let owners = [];
 
-    if(params.owner_uids.length === 0){
+    if (params.owner_uids.length === 0) {
       params.owner_uids.push(
         this.getUid()
       )
@@ -180,7 +180,7 @@ class groupController extends baseController {
     yapi.commons.saveLog({
       content: `<a href="/user/profile/${this.getUid()}">${username}</a> 新增了分组 <a href="/group/${
         result._id
-      }">${params.group_name}</a>`,
+        }">${params.group_name}</a>`,
       type: 'group',
       uid: this.getUid(),
       username: username,
@@ -212,7 +212,7 @@ class groupController extends baseController {
     };
   }
 
-  async getMyGroup(ctx){
+  async getMyGroup(ctx) {
     var groupInst = yapi.getInst(groupModel);
     let privateGroup = await groupInst.getByPrivateUid(this.getUid());
     if (!privateGroup) {
@@ -224,9 +224,9 @@ class groupController extends baseController {
         type: 'private'
       });
     }
-    if(privateGroup){
+    if (privateGroup) {
       ctx.body = yapi.commons.resReturn(privateGroup)
-    }else{
+    } else {
       ctx.body = yapi.commons.resReturn(null)
     }
   }
@@ -275,7 +275,7 @@ class groupController extends baseController {
       yapi.commons.saveLog({
         content: `<a href="/user/profile/${this.getUid()}">${username}</a> 新增了分组成员 ${members} 为 ${
           rolename[params.role]
-        }`,
+          }`,
         type: 'group',
         uid: this.getUid(),
         username: username,
@@ -323,7 +323,7 @@ class groupController extends baseController {
     yapi.commons.saveLog({
       content: `<a href="/user/profile/${this.getUid()}">${username}</a> 更改了分组成员 <a href="/user/profile/${
         params.member_uid
-      }">${groupUserdata ? groupUserdata.username : ''}</a> 的权限为 "${rolename[params.role]}"`,
+        }">${groupUserdata ? groupUserdata.username : ''}</a> 的权限为 "${rolename[params.role]}"`,
       type: 'group',
       uid: this.getUid(),
       username: username,
@@ -380,7 +380,7 @@ class groupController extends baseController {
     yapi.commons.saveLog({
       content: `<a href="/user/profile/${this.getUid()}">${username}</a> 删除了分组成员 <a href="/user/profile/${
         params.member_uid
-      }">${groupUserdata ? groupUserdata.username : ''}</a>`,
+        }">${groupUserdata ? groupUserdata.username : ''}</a>`,
       type: 'group',
       uid: this.getUid(),
       username: username,
@@ -415,37 +415,37 @@ class groupController extends baseController {
       });
     }
 
-    if(this.getRole() === 'admin'){
+    if (this.getRole() === 'admin') {
       let result = await groupInst.list();
-      if(result && result.length > 0 ){
-        for (let i = 0; i < result.length; i++){
+      if (result && result.length > 0) {
+        for (let i = 0; i < result.length; i++) {
           result[i] = result[i].toObject();
           newResult.unshift(result[i])
         }
       }
-    }else{
+    } else {
       let result = await groupInst.getAuthList(this.getUid());
-      if(result && result.length > 0 ){
-        for (let i = 0; i < result.length; i++){
+      if (result && result.length > 0) {
+        for (let i = 0; i < result.length; i++) {
           result[i] = result[i].toObject();
           newResult.unshift(result[i])
         }
       }
 
-      const groupIds = newResult.map(item=> item._id);
+      const groupIds = newResult.map(item => item._id);
       const newGroupIds = [];
 
       let groupByProject = await projectInst.getAuthList(this.getUid());
-      if(groupByProject && groupByProject.length > 0){
-        groupByProject.forEach( _data=>{
+      if (groupByProject && groupByProject.length > 0) {
+        groupByProject.forEach(_data => {
           const _temp = [...groupIds, ...newGroupIds];
-          if(!_.find(_temp, id=> id === _data.group_id)){
+          if (!_.find(_temp, id => id === _data.group_id)) {
             newGroupIds.push(_data.group_id)
           }
         })
       }
       let newData = await groupInst.findByGroups(newGroupIds)
-      newData.forEach(_data=>{
+      newData.forEach(_data => {
         _data = _data.toObject();
         newResult.push(_data);
       })
@@ -521,7 +521,7 @@ class groupController extends baseController {
     yapi.commons.saveLog({
       content: `<a href="/user/profile/${this.getUid()}">${username}</a> 更新了 <a href="/group/${
         params.id
-      }">${params.group_name}</a> 分组`,
+        }">${params.group_name}</a> 分组`,
       type: 'group',
       uid: this.getUid(),
       username: username,
